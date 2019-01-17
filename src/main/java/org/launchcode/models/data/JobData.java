@@ -116,5 +116,5 @@ public class JobData {
 
     public JobFieldData<PositionType> getPositionTypes() {
         return positionTypes;
-    }
-}
+    }}
+
