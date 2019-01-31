@@ -7,6 +7,7 @@ import org.launchcode.models.data.JobData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -47,17 +48,26 @@ public class JobController {
         // new Job and add it to the jobData data store. Then
         // redirect to the job detail view for the new Job.
 
-        String name = jobForm.getName();
-        Employer newEmployer = jobData.getEmployers().findById(jobForm.getEmployerId());
-        Location newLocation = jobData.getLocations().findById(jobForm.getLocationId());
-        PositionType newPositionType = jobData.getPositionTypes().findById(jobForm.getPositionTypeId());
-        CoreCompetency newCoreCompetency = jobData.getCoreCompetencies().findById(jobForm.getCoreCompetencyId());
+        if (errors.hasErrors()) {
 
-        Job newJob = new Job(name, newEmployer, newLocation, newPositionType, newCoreCompetency);
+            return "new-job";
 
-        jobData.add(newJob);
+        } else {
 
-        return "redirect:";
+
+            String name = jobForm.getName();
+            Employer newEmployer = jobData.getEmployers().findById(jobForm.getEmployerId());
+            Location newLocation = jobData.getLocations().findById(jobForm.getLocationId());
+            PositionType newPositionType = jobData.getPositionTypes().findById(jobForm.getPositionTypeId());
+            CoreCompetency newCoreCompetency = jobData.getCoreCompetencies().findById(jobForm.getCoreCompetencyId());
+
+            Job newJob = new Job(name, newEmployer, newLocation, newPositionType, newCoreCompetency);
+
+            jobData.add(newJob);
+
+            return "redirect:/job?id=" + newJob.getId();
+
+        }
 
     }
 }
